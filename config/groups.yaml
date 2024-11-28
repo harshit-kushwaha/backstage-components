@@ -3,8 +3,13 @@ kind: Group
 metadata:
   name: product-engineering-team
   description: The product engineering team responsible for development and maintenance.
+  links:
+    - url: https://example.com
+      title: My Dashboard
+      icon: dashboard
 spec:
   type: team
   members:
     - user:harshit
   children: []
+  
