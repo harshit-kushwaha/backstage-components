@@ -10,27 +10,26 @@ spec:
   type: openapi
   lifecycle: production
   owner: user:harshit
-  definition:
-    $text: >
-      {
-        "openapi": "3.0.0",
-        "info": {
-          "title": "Sample API",
-          "version": "1.0.0"
-        },
-        "paths": {
-          "/sample": {
-            "get": {
-              "summary": "Get sample data",
-              "responses": {
-                "200": {
-                  "description": "Successful response"
-                }
+  definition: |
+    {
+      "openapi": "3.0.0",
+      "info": {
+        "title": "Sample API",
+        "version": "1.0.0"
+      },
+      "paths": {
+        "/sample": {
+          "get": {
+            "summary": "Get sample data",
+            "responses": {
+              "200": {
+                "description": "Successful response"
               }
             }
           }
         }
       }
+    }
 ---
 apiVersion: backstage.io/v1alpha1
 kind: API
@@ -44,24 +43,23 @@ spec:
   type: openapi
   lifecycle: production
   owner: user:harshit
-  definition:
-    $text: >
-      {
-        "openapi": "3.0.0",
-        "info": {
-          "title": "Feature Toggle API",
-          "version": "1.0.0"
-        },
-        "paths": {
-          "/toggle": {
-            "post": {
-              "summary": "Toggle a feature",
-              "responses": {
-                "200": {
-                  "description": "Successful toggle"
-                }
+  definition: |
+    {
+      "openapi": "3.0.0",
+      "info": {
+        "title": "Feature Toggle API",
+        "version": "1.0.0"
+      },
+      "paths": {
+        "/toggle": {
+          "post": {
+            "summary": "Toggle a feature",
+            "responses": {
+              "200": {
+                "description": "Successful toggle"
               }
             }
           }
         }
       }
+    }
