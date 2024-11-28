@@ -1,0 +1,67 @@
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: sample-api
+  description: This API is provided by the `sample-service` component and is used to demonstrate Backstage API configuration.
+  labels:
+    system: sample-system
+    tier: backend
+spec:
+  type: openapi
+  lifecycle: production
+  owner: user:harshit
+  definition:
+    $text: >
+      {
+        "openapi": "3.0.0",
+        "info": {
+          "title": "Sample API",
+          "version": "1.0.0"
+        },
+        "paths": {
+          "/sample": {
+            "get": {
+              "summary": "Get sample data",
+              "responses": {
+                "200": {
+                  "description": "Successful response"
+                }
+              }
+            }
+          }
+        }
+      }
+----
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: feature-toggle-api
+  description: This API is consumed by the `sample-service` component for managing feature toggles.
+  labels:
+    system: feature-management
+    tier: backend
+spec:
+  type: openapi
+  lifecycle: production
+  owner: user:harshit
+  definition:
+    $text: >
+      {
+        "openapi": "3.0.0",
+        "info": {
+          "title": "Feature Toggle API",
+          "version": "1.0.0"
+        },
+        "paths": {
+          "/toggle": {
+            "post": {
+              "summary": "Toggle a feature",
+              "responses": {
+                "200": {
+                  "description": "Successful toggle"
+                }
+              }
+            }
+          }
+        }
+      }
