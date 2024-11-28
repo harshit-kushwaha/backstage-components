@@ -1,0 +1,14 @@
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: sample-database
+  description: The database resource used by the `sample-service` component.
+  labels:
+    system: sample-system
+    environment: production
+spec:
+  type: database
+  owner: user:harshit
+  relations:
+    - type: "provides"
+      targetRef: component:default/sample-service
