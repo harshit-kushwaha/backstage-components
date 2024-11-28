@@ -1,0 +1,7 @@
+apiVersion: backstage.io/v1alpha1
+kind: Location
+metadata:
+  name: all-entities
+spec:
+  type: url
+  target: https://github.com/harshit-kushwaha/backstage-components/tree/main/config
