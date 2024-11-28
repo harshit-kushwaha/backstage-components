@@ -5,7 +5,6 @@ metadata:
   description: The product engineering team responsible for development and maintenance.
 spec:
   type: team
-  parent: null
   members:
     - user:harshit
   children: []
