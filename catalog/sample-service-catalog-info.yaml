@@ -1,0 +1,22 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: sample-service
+  description: A sample service for demonstrating Backstage component configuration.
+  labels:
+    system: sample-system
+    tier: backend
+  annotations:
+    backstage.io/techdocs-ref: url:https://github.com/example-org/sample-service/blob/main/docs
+    github.com/project-slug: example-org/sample-service
+    kubernetes.io/service-account: sample-service-account
+spec:
+  type: service
+  lifecycle: production
+  owner: harshit
+  providesApis:
+    - sample-api
+  consumesApis:
+    - feature-toggle-api
+  dependsOn:
+    - resource:sample-database
