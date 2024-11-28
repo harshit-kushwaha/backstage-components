@@ -1,0 +1,75 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: spring-boot-template
+  title: Spring Boot Project Template
+  description: A template to generate a Spring Boot project using Spring Initializer.
+  tags:
+    - spring
+    - spring-boot
+    - java
+spec:
+  owner: user:harshit
+  type: service
+  parameters:
+    - title: Project Configuration
+      properties:
+        groupId:
+          title: Group ID
+          type: string
+          description: The group ID of your project (e.g., com.example).
+          default: com.example
+        artifactId:
+          title: Artifact ID
+          type: string
+          description: The artifact ID of your project (e.g., my-app).
+          default: my-app
+        version:
+          title: Version
+          type: string
+          description: The version of your project.
+          default: 1.0.0
+        packageName:
+          title: Package Name
+          type: string
+          description: The base package name for your project (e.g., com.example.myapp).
+          default: com.example.myapp
+        dependencies:
+          title: Dependencies
+          type: array
+          description: List of dependencies (e.g., web, actuator, data-jpa).
+          items:
+            type: string
+          default:
+            - web
+            - actuator
+  steps:
+    - id: fetch-spring-initializer
+      name: Fetch Spring Boot Project
+      action: fetch:plain
+      input:
+        url: "https://start.spring.io/starter.zip"
+        query:
+          type: maven-project
+          language: java
+          bootVersion: 2.7.5
+          baseDir: "{{ parameters.artifactId }}"
+          groupId: "{{ parameters.groupId }}"
+          artifactId: "{{ parameters.artifactId }}"
+          version: "{{ parameters.version }}"
+          name: "{{ parameters.artifactId }}"
+          packageName: "{{ parameters.packageName }}"
+          dependencies: "{{ parameters.dependencies | join(',') }}"
+        targetPath: "./{{ parameters.artifactId }}"
+    - id: publish
+      name: Publish Project
+      action: publish:github
+      input:
+        repoUrl: "{{ parameters.repoUrl }}"
+        defaultBranch: main
+        visibility: private
+    - id: register
+      name: Register Component
+      action: catalog:register
+      input:
+        repoContentsUrl: "{{ steps.publish.output.repoContentsUrl }}"
