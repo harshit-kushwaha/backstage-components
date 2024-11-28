@@ -1,0 +1,15 @@
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: harshit
+  description: A skilled software engineer specializing in backend and microservices development.
+  annotations:
+    github.com/user-login: harshit123
+    linkedin.com/profile: https://www.linkedin.com/in/harshit123
+spec:
+  profile:
+    displayName: Harshit
+    email: harshit@example.com
+    picture: https://example.com/images/harshit.jpg
+  memberOf:
+    - product-engineering-team
