@@ -28,14 +28,11 @@ spec:
       name: Create React App
       action: execute:command
       input:
-        # Choose `npx create-react-app` command
         command: npx
-        args: 
+        args:
           - create-react-app
           - "{{ parameters.name }}"
-          {% raw %}{{#if parameters.useTypescript}}{% endraw %}
-          - --template typescript
-          {% raw %}{{/if}}{% endraw %}
+          - "{{ parameters.useTypescript | ternary('--template typescript', '') }}"
     - id: add-to-repo
       name: Prepare Repository
       action: publish:github
