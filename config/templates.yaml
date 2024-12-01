@@ -28,7 +28,7 @@ spec:
       name: Fetch Template
       action: fetch:template
       input:
-        url: https://github.com/facebook/create-react-app/archive/refs/heads/main.zip
+        url: https://github.com/facebook/create-react-app/archive/main.zip
         targetPath: .
         values:
           name: '{{ parameters.name }}'
