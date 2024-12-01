@@ -1,56 +1,51 @@
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
-  name: react-app-template
-  title: React Application Template
-  description: Scaffolds a new React application using create-react-app.
+  name: create-react-app
+  title: Create React App
+  description: Template to bootstrap a React app using Create React App
   tags:
     - react
+    - javascript
     - frontend
-    - template
 spec:
-  owner: team/frontend
+  owner: frontend-team
   type: website
   parameters:
-    - title: Project Information
+    - title: Project Details
       properties:
         name:
-          title: Application Name
-          description: The name of your React application.
+          title: Project Name
+          description: Name of the React application
           type: string
-        description:
-          title: Application Description
-          description: A brief description of your React application.
-          type: string
-          default: A new React application
+        useTypescript:
+          title: Use TypeScript
+          description: Whether to initialize the project with TypeScript
+          type: boolean
+          default: false
   steps:
-    - id: fetch
-      name: Fetch Template
-      action: fetch:template
+    - id: create-react-app
+      name: Create React App
+      action: execute:command
       input:
-        url: https://github.com/facebook/create-react-app/archive/main.zip
-        targetPath: .
-        values:
-          name: '{{ parameters.name }}'
-    - id: setup
-      name: Initialize Project
-      action: execute:shell
-      input:
-        shell: bash
-        script: |
-          mv create-react-app-main/* .
-          mv create-react-app-main/.* .
-          rm -rf create-react-app-main
-          npm install
-    - id: publish
-      name: Publish to GitHub
+        # Choose `npx create-react-app` command
+        command: npx
+        args: 
+          - create-react-app
+          - "{{ parameters.name }}"
+          {% raw %}{{#if parameters.useTypescript}}{% endraw %}
+          - --template typescript
+          {% raw %}{{/if}}{% endraw %}
+    - id: add-to-repo
+      name: Prepare Repository
       action: publish:github
       input:
-        repoUrl: github.com/your-org/{{ parameters.name }}
-        description: '{{ parameters.description }}'
+        repoUrl: "github.com/org-name/{{ parameters.name }}"
         defaultBranch: main
-        sourcePath: .
+        sourcePath: "{{ parameters.name }}"
   output:
     links:
       - title: Repository
-        url: '{{ steps.publish.output.remoteUrl }}'
+        url: "{{ steps.add-to-repo.output.remoteUrl }}"
+      - title: Deployed App
+        url: "https://your-deployment-url.com/{{ parameters.name }}"
