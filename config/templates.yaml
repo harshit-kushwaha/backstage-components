@@ -1,75 +1,56 @@
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
-  name: spring-boot-template
-  title: Spring Boot Project Template
-  description: A template to generate a Spring Boot project using Spring Initializer.
+  name: react-app-template
+  title: React Application Template
+  description: Scaffolds a new React application using create-react-app.
   tags:
-    - spring
-    - spring-boot
-    - java
+    - react
+    - frontend
+    - template
 spec:
-  owner: user:harshit
-  type: service
+  owner: team/frontend
+  type: website
   parameters:
-    - title: Project Configuration
+    - title: Project Information
       properties:
-        groupId:
-          title: Group ID
+        name:
+          title: Application Name
+          description: The name of your React application.
           type: string
-          description: The group ID of your project (e.g., com.example).
-          default: com.example
-        artifactId:
-          title: Artifact ID
+        description:
+          title: Application Description
+          description: A brief description of your React application.
           type: string
-          description: The artifact ID of your project (e.g., my-app).
-          default: my-app
-        version:
-          title: Version
-          type: string
-          description: The version of your project.
-          default: 1.0.0
-        packageName:
-          title: Package Name
-          type: string
-          description: The base package name for your project (e.g., com.example.myapp).
-          default: com.example.myapp
-        dependencies:
-          title: Dependencies
-          type: array
-          description: List of dependencies (e.g., web, actuator, data-jpa).
-          items:
-            type: string
-          default:
-            - web
-            - actuator
+          default: A new React application
   steps:
-    - id: fetch-spring-initializer
-      name: Fetch Spring Boot Project
-      action: fetch:plain
+    - id: fetch
+      name: Fetch Template
+      action: fetch:template
       input:
-        url: "https://start.spring.io/starter.zip"
-        query:
-          type: maven-project
-          language: java
-          bootVersion: 2.7.5
-          baseDir: "{{ parameters.artifactId }}"
-          groupId: "{{ parameters.groupId }}"
-          artifactId: "{{ parameters.artifactId }}"
-          version: "{{ parameters.version }}"
-          name: "{{ parameters.artifactId }}"
-          packageName: "{{ parameters.packageName }}"
-          dependencies: "{{ parameters.dependencies | join(',') }}"
-        targetPath: "./{{ parameters.artifactId }}"
+        url: https://github.com/facebook/create-react-app/archive/refs/heads/main.zip
+        targetPath: .
+        values:
+          name: '{{ parameters.name }}'
+    - id: setup
+      name: Initialize Project
+      action: execute:shell
+      input:
+        shell: bash
+        script: |
+          mv create-react-app-main/* .
+          mv create-react-app-main/.* .
+          rm -rf create-react-app-main
+          npm install
     - id: publish
-      name: Publish Project
+      name: Publish to GitHub
       action: publish:github
       input:
-        repoUrl: "{{ parameters.repoUrl }}"
+        repoUrl: github.com/your-org/{{ parameters.name }}
+        description: '{{ parameters.description }}'
         defaultBranch: main
-        visibility: private
-    - id: register
-      name: Register Component
-      action: catalog:register
-      input:
-        repoContentsUrl: "{{ steps.publish.output.repoContentsUrl }}"
+        sourcePath: .
+  output:
+    links:
+      - title: Repository
+        url: '{{ steps.publish.output.remoteUrl }}'
